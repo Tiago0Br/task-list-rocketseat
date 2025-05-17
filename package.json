@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },
@@ -15,10 +15,9 @@
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.17",
-    "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "prisma": "^6.7.0",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {
