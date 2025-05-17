@@ -17,7 +17,7 @@ Antes das rotas, vamos entender qual a estrutura (propriedades) que uma task dev
 
 #### Rotas
 
-- [ ] POST - /tasks
+- [X] POST - /tasks
 - [ ] GET - /tasks
 - [ ] PUT - /tasks/:id
 - [ ] DELETE - /tasks/:id
