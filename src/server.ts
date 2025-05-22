@@ -1,6 +1,7 @@
 import express from 'express'
 
 import { taskRouter } from './routes/task'
+import { errorHandler } from './middlewares/error-handler'
 
 const app = express()
 
@@ -11,5 +12,6 @@ app.get('/', (_, response) => {
 })
 
 app.use('/tasks', taskRouter)
+app.use(errorHandler)
 
-app.listen(3333, () => console.log('Server is running'))
+app.listen(3333, () => console.log('Server is running on port 3333'))
