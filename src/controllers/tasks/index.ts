@@ -1,0 +1,7 @@
+export { completeTask } from './complete-task'
+export { createTask } from './create-task'
+export { deleteTask } from './delete-task'
+export { getAllTasks } from './get-all-tasks'
+export { getTaskById } from './get-task-by-id'
+export { uncompleteTask } from './uncomplete-task'
+export { updateTask } from './update-task'

@@ -1,7 +1,8 @@
 import express from 'express'
 
-import { taskRouter } from './routes/task'
 import { errorHandler } from './middlewares/error-handler'
+import { taskRouter } from './routes/task'
+import { userRouter } from './routes/users'
 
 const app = express()
 
@@ -11,6 +12,7 @@ app.get('/', (_, response) => {
   response.json({ message: 'API is running' })
 })
 
+app.use('/', userRouter)
 app.use('/tasks', taskRouter)
 app.use(errorHandler)
 

@@ -17,10 +17,10 @@ Antes das rotas, vamos entender qual a estrutura (propriedades) que uma task dev
 
 #### Rotas
 
-- [X] POST - /tasks
-- [ ] GET - /tasks
-- [ ] PUT - /tasks/:id
-- [ ] DELETE - /tasks/:id
-- [ ] PATCH - /tasks/:id/complete
+- [x] POST - /tasks
+- [x] GET - /tasks
+- [x] PUT - /tasks/:id
+- [x] DELETE - /tasks/:id
+- [x] PATCH - /tasks/:id/complete
 
 Feito com 💜 &nbsp;por [Tiago Lopes]([https://tiagolopes.vercel.app) 👋
