@@ -1,5 +1,6 @@
 import express from 'express'
 
+import { env } from './env'
 import { errorHandler } from './middlewares/error-handler'
 import { taskRouter } from './routes/task'
 import { userRouter } from './routes/users'
@@ -14,6 +15,7 @@ app.get('/', (_, response) => {
 
 app.use('/', userRouter)
 app.use('/tasks', taskRouter)
+
 app.use(errorHandler)
 
-app.listen(3333, () => console.log('Server is running on port 3333'))
+app.listen(env.PORT, () => console.log('Server is running on port 3333'))

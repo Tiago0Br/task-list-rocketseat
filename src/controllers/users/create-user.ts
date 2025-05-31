@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 
 import { prisma } from '@/lib/prisma'
 
-export async function register(req: Request, res: Response) {
+export async function createUser(req: Request, res: Response) {
   const registerSchema = z.object({
     name: z
       .string({
