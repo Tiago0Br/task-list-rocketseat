@@ -2,6 +2,7 @@ import express from 'express'
 
 import { env } from './env'
 import { errorHandler } from './middlewares/error-handler'
+import { checkToken } from './middlewares/check-token'
 import { taskRouter } from './routes/task'
 import { userRouter } from './routes/users'
 
@@ -14,6 +15,8 @@ app.get('/', (_, response) => {
 })
 
 app.use('/', userRouter)
+
+app.use(checkToken)
 app.use('/tasks', taskRouter)
 
 app.use(errorHandler)
