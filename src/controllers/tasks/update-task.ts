@@ -30,7 +30,8 @@ export async function updateTask(req: Request, res: Response) {
 
   const task = await prisma.task.findUnique({
     where: {
-      id
+      id,
+      userId: req.user!.id
     }
   })
 

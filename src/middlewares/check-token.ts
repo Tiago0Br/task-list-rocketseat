@@ -12,8 +12,13 @@ export function checkToken(request: Request, response: Response, next: NextFunct
   }
 
   try {
-    jwt.verify(token, env.JWT_SECRET)
+    const { id } = jwt.verify(token, env.JWT_SECRET) as { id: string }
+
+    request.user = {
+      id
+    }
   } catch (error) {
+    console.log(error)
     response.status(401).json({ message: 'Unauthorized' })
     return
   }

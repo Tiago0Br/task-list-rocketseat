@@ -18,6 +18,7 @@ export async function createTask(req: Request, res: Response) {
   const { title, description } = createTaskSchema.parse(req.body)
   const task = await prisma.task.create({
     data: {
+      userId: req.user!.id,
       title,
       description
     }

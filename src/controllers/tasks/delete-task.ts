@@ -28,7 +28,8 @@ export async function deleteTask(req: Request, res: Response) {
 
   await prisma.task.delete({
     where: {
-      id
+      id,
+      userId: req.user!.id
     }
   })
 

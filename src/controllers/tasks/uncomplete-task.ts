@@ -28,7 +28,8 @@ export async function uncompleteTask(req: Request, res: Response) {
 
   await prisma.task.update({
     where: {
-      id
+      id,
+      userId: req.user!.id
     },
     data: {
       completedAt: {
