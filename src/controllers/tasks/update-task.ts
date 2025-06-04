@@ -1,29 +1,11 @@
 import type { Request, Response } from 'express'
-import { z } from 'zod'
 
+import { TaskNotFoundError } from '@/errors'
 import { prisma } from '@/lib/prisma'
+import { taskSchema } from '@/schemas/task-schema'
 
 export async function updateTask(req: Request, res: Response) {
-  const updateTaskByIdSchema = z.object({
-    id: z
-      .string({
-        required_error: 'Id is required',
-        invalid_type_error: 'Id must be a string'
-      })
-      .uuid('Id must be a valid uuid'),
-    title: z
-      .string({
-        invalid_type_error: 'Title must be a string'
-      })
-      .optional(),
-    description: z
-      .string({
-        invalid_type_error: 'Description must be a string'
-      })
-      .optional()
-  })
-
-  const { id, title, description } = updateTaskByIdSchema.parse({
+  const { id, title, description } = taskSchema.update.parse({
     ...req.params,
     ...req.body
   })
@@ -36,8 +18,7 @@ export async function updateTask(req: Request, res: Response) {
   })
 
   if (!task) {
-    res.status(400).json({ message: 'Task not found' })
-    return
+    throw TaskNotFoundError.byId(id)
   }
 
   const updatedTask = await prisma.task.update({

@@ -1,26 +1,14 @@
 import type { Request, Response } from 'express'
-import { z } from 'zod'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
+import { InvalidCredentialsError } from '@/errors'
 import { prisma } from '@/lib/prisma'
 import { env } from '@/env'
+import { userSchema } from '@/schemas/user-schema'
 
 export async function login(req: Request, res: Response) {
-  const loginSchema = z.object({
-    email: z
-      .string({
-        required_error: 'Email is required',
-        invalid_type_error: 'Email must be a string'
-      })
-      .email('Email must be a valid email'),
-    password: z.string({
-      required_error: 'Password is required',
-      invalid_type_error: 'Password must be a string'
-    })
-  })
-
-  const { email, password } = loginSchema.parse(req.body)
+  const { email, password } = userSchema.login.parse(req.body)
 
   const user = await prisma.user.findUnique({
     where: {
@@ -29,15 +17,13 @@ export async function login(req: Request, res: Response) {
   })
 
   if (!user) {
-    res.status(401).json({ message: 'Invalid Credentials' })
-    return
+    throw new InvalidCredentialsError()
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password)
 
   if (!isPasswordValid) {
-    res.status(401).json({ message: 'Invalid Credentials' })
-    return
+    throw new InvalidCredentialsError()
   }
 
   const token = jwt.sign({ id: user.id }, env.JWT_SECRET, {

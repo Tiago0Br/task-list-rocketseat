@@ -1,19 +1,11 @@
 import type { Request, Response } from 'express'
-import { z } from 'zod'
 
+import { TaskNotFoundError } from '@/errors'
 import { prisma } from '@/lib/prisma'
+import { taskSchema } from '@/schemas/task-schema'
 
 export async function deleteTask(req: Request, res: Response) {
-  const deleteTaskByIdSchema = z.object({
-    id: z
-      .string({
-        required_error: 'Id is required',
-        invalid_type_error: 'Id must be a string'
-      })
-      .uuid('Id must be a valid uuid')
-  })
-
-  const { id } = deleteTaskByIdSchema.parse(req.params)
+  const { id } = taskSchema.getById.parse(req.params)
 
   const task = await prisma.task.findUnique({
     where: {
@@ -22,8 +14,7 @@ export async function deleteTask(req: Request, res: Response) {
   })
 
   if (!task) {
-    res.status(400).json({ message: 'Task not found' })
-    return
+    throw TaskNotFoundError.byId(id)
   }
 
   await prisma.task.delete({

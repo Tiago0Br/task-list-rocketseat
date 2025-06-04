@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { env } from '@/env'
+import { UnauthorizedError } from '@/errors'
 
-export function checkToken(request: Request, response: Response, next: NextFunction) {
+export function checkToken(request: Request, _: Response, next: NextFunction) {
   const token = request.headers.authorization
 
   if (!token) {
-    response.status(401).json({ message: 'Unauthorized' })
-    return
+    throw new UnauthorizedError()
   }
 
   try {
@@ -18,9 +18,7 @@ export function checkToken(request: Request, response: Response, next: NextFunct
       id
     }
   } catch (error) {
-    console.log(error)
-    response.status(401).json({ message: 'Unauthorized' })
-    return
+    throw new UnauthorizedError()
   }
 
   next()
