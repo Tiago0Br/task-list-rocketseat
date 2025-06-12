@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { ZodError } from 'zod'
 
 import { DomainError, UnauthorizedError } from '@/errors'
+import { env } from '@/env'
 
 export function errorHandler(
   error: Error,
@@ -23,6 +24,10 @@ export function errorHandler(
       message: error.message
     })
   } else {
+    if (env.NODE_ENV !== 'production') {
+      console.error(error)
+    }
+
     response.status(500).json({
       message: 'Internal server error'
     })
