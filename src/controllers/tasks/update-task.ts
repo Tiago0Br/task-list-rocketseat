@@ -1,34 +1,21 @@
 import type { Request, Response } from 'express'
 
-import { TaskNotFoundError } from '@/errors'
-import { prisma } from '@/lib/prisma'
 import { taskSchema } from '@/schemas/task-schema'
+import { makePrismaTaskRepository } from '@/factories/make-prisma-task-repository'
 
 export async function updateTask(req: Request, res: Response) {
   const { id, title, description } = taskSchema.update.parse({
     ...req.params,
     ...req.body
   })
+  const userId = req.user!.id
 
-  const task = await prisma.task.findUnique({
-    where: {
-      id,
-      userId: req.user!.id
-    }
-  })
+  const taskRepository = makePrismaTaskRepository()
 
-  if (!task) {
-    throw TaskNotFoundError.byId(id)
-  }
-
-  const updatedTask = await prisma.task.update({
-    where: {
-      id
-    },
-    data: {
-      title,
-      description
-    }
+  await taskRepository.getById(userId, id)
+  const updatedTask = await taskRepository.update(id, {
+    title,
+    description
   })
 
   res.status(200).json(updatedTask)

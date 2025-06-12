@@ -1,12 +1,20 @@
-import { Prisma, PrismaClient, Task } from '@/generated/prisma'
-import { TaskRepository } from '../task-repository'
+import { Prisma, PrismaClient } from '@/generated/prisma'
+import { CreateTaskInput, TaskRepository } from '../task-repository'
 import { TaskNotFoundError } from '@/errors'
 
 export class PrismaTaskRepository implements TaskRepository {
   constructor(private readonly prisma: PrismaClient) {}
-  create(task: Prisma.TaskCreateInput) {
+  create({ title, description, userId }: CreateTaskInput) {
     return this.prisma.task.create({
-      data: task,
+      data: {
+        title,
+        description,
+        user: {
+          connect: {
+            id: userId
+          }
+        }
+      },
       select: {
         id: true,
         title: true,
@@ -15,7 +23,7 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     })
   }
-  getAll() {
+  getAllByUserId(userId: string) {
     return this.prisma.task.findMany({
       select: {
         id: true,
@@ -25,7 +33,7 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     })
   }
-  async getById(id: string) {
+  async getById(userId: string, id: string) {
     const task = await this.prisma.task.findUnique({
       where: {
         id

@@ -1,22 +1,14 @@
 import type { Request, Response } from 'express'
 
-import { TaskNotFoundError } from '@/errors'
-import { prisma } from '@/lib/prisma'
 import { taskSchema } from '@/schemas/task-schema'
+import { makePrismaTaskRepository } from '@/factories/make-prisma-task-repository'
 
 export async function getTaskById(req: Request, res: Response) {
   const { id } = taskSchema.getById.parse(req.params)
+  const userId = req.user!.id
 
-  const task = await prisma.task.findUnique({
-    where: {
-      id,
-      userId: req.user!.id
-    }
-  })
-
-  if (!task) {
-    throw TaskNotFoundError.byId(id)
-  }
+  const taskRepository = makePrismaTaskRepository()
+  const task = await taskRepository.getById(userId, id)
 
   res.status(200).json(task)
 }

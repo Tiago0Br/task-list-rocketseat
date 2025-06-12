@@ -1,13 +1,12 @@
 import type { Request, Response } from 'express'
 
-import { prisma } from '@/lib/prisma'
+import { makePrismaTaskRepository } from '@/factories/make-prisma-task-repository'
 
 export async function getAllTasks(req: Request, res: Response) {
-  const task = await prisma.task.findMany({
-    where: {
-      userId: req.user!.id
-    }
-  })
+  const userId = req.user!.id
+  const taskRepository = makePrismaTaskRepository()
+
+  const task = await taskRepository.getAllByUserId(userId)
 
   res.status(200).json(task)
 }
