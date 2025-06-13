@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "docs:generate": "apidoc -i src/controllers -o ./docs"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.7.0",
+    "apidoc": "^1.2.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

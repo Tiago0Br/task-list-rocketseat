@@ -1,0 +1,9 @@
+{
+  "name": "Task List",
+  "version": "1.0.0",
+  "description": "Documentação da API Task List",
+  "apidoc": {
+    "title": "Documentação da API Task List",
+    "url": "http://localhost:3333/"
+  }
+}

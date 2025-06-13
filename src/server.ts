@@ -10,6 +10,7 @@ const app = express()
 
 app.use(express.json())
 
+app.use('/docs', express.static('docs'))
 app.get('/', (_, response) => {
   response.json({ message: 'API is running' })
 })
